@@ -8,3 +8,14 @@ dependencies:
 - jinja2
 - click
 - psutil
+# - eggshell
+# analytic
+- python=2.7
+- numpy
+# visualisation
+- cartopy
+# EO Data
+- gdal
+- rasterio
+- pip:
+   - sentinelsat
