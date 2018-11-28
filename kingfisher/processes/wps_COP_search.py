@@ -5,7 +5,7 @@ from pywps import ComplexInput, LiteralInput, ComplexOutput
 from pywps import Format, FORMATS
 from pywps.app.Common import Metadata
 
-from eggshell import log # init_process_logger
+from eggshell.log import init_process_logger
 
 from eggshell.utils import rename_complexinputs
 from kingfisher import eodata
@@ -117,8 +117,8 @@ class COP_searchProcess(Process):
 
         super(COP_searchProcess, self).__init__(
             self._handler,
-            identifier="EO_COPERNICUS_search",
-            title="EO COPERNICUS search products",
+            identifier="COPERNICUS_search",
+            title="COPERNICUS search products in scihub.copernicus",
             version="0.1",
             abstract="Search for EO Data in the scihub.copernicus archive"
                      "output is a list of Product according to the querry and a graphical visualisation.",
