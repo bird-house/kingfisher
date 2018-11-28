@@ -25,7 +25,7 @@ from sentinelsat import SentinelAPI, geojson_to_wkt
 LOGGER = logging.getLogger("PYWPS")
 
 
-class EO_COP_searchProcess(Process):
+class COP_searchProcess(Process):
     """
     TODO: like FetchProcess
     """
@@ -115,7 +115,7 @@ class EO_COP_searchProcess(Process):
                           )
         ]
 
-        super(EO_COP_searchProcess, self).__init__(
+        super(COP_searchProcess, self).__init__(
             self._handler,
             identifier="EO_COPERNICUS_search",
             title="EO COPERNICUS search products",
