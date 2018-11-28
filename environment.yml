@@ -19,3 +19,4 @@ dependencies:
 - rasterio
 - pip:
    - sentinelsat
+   - -e git+https://github.com/bird-house/eggshell.git#egg=eggshell
