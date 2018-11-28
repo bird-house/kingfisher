@@ -2,8 +2,7 @@ from tempfile import mkstemp
 from osgeo import gdal, osr
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
-from eggshell import visualisation as vs
-# from flyingpigeon.eggshell import visualisation as vs
+from eggshell.visual import visualisation as vs
 import io
 from PIL import Image
 import rasterio
@@ -369,7 +368,7 @@ def merge(tiles, prefix="mosaic_"):
     from os.path import join, basename
     import subprocess
     from subprocess import CalledProcessError
-    from flyingpigeon.config import _PATH
+    from eggshell.config import _PATH
 
     try:
         LOGGER.debug('start merging of %s files' % len(tiles))
