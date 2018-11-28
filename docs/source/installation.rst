@@ -21,7 +21,7 @@ Check out code from the Kingfisher GitHub repo and start the installation:
 
 .. code-block:: sh
 
-   $ git clone https://github.com/nilshempelmann/kingfisher.git
+   $ git clone https://github.com/bird-house/kingfisher.git
    $ cd kingfisher
    $ conda env create -f environment.yml
    $ source activate kingfisher
@@ -35,7 +35,7 @@ We provide also a ``Makefile`` to run this installation without additional steps
 
 .. code-block:: sh
 
-   $ git clone https://github.com/nilshempelmann/kingfisher.git
+   $ git clone https://github.com/bird-house/kingfisher.git
    $ cd kingfisher
    $ make clean    # cleans up a previous Conda environment
    $ make install  # installs Conda if necessary and runs the above installation steps

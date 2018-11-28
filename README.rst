@@ -5,12 +5,12 @@ Kingfisher
    :target: http://kingfisher.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
 
-.. image:: https://travis-ci.org/nilshempelmann/kingfisher.svg?branch=master
-   :target: https://travis-ci.org/nilshempelmann/kingfisher
+.. image:: https://travis-ci.org/bird-house/kingfisher.svg?branch=master
+   :target: https://travis-ci.org/bird-house/kingfisher
    :alt: Travis Build
 
-.. image:: https://img.shields.io/github/license/nilshempelmann/kingfisher.svg
-    :target: https://github.com/nilshempelmann/kingfisher/blob/master/LICENSE.txt
+.. image:: https://img.shields.io/github/license/bird-house/kingfisher.svg
+    :target: https://github.com/bird-house/kingfisher/blob/master/LICENSE.txt
     :alt: GitHub license
 
 .. image:: https://badges.gitter.im/bird-house/birdhouse.svg

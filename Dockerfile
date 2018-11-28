@@ -1,6 +1,6 @@
 # vim:set ft=dockerfile:
 FROM continuumio/miniconda3
-MAINTAINER https://github.com/nilshempelmann/kingfisher
+MAINTAINER https://github.com/bird-house/kingfisher
 LABEL Description="Kingfisher WPS" Vendor="Birdhouse" Version="0.1.0"
 
 # Update Debian system
