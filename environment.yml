@@ -10,7 +10,7 @@ dependencies:
 - psutil
 # - eggshell
 # analytic
-- python=2.7
+- python=3
 - numpy
 # visualisation
 - cartopy

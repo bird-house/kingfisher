@@ -7,6 +7,6 @@ from .wps_COP_search import COP_searchProcess
 processes = [
     SayHello(),
     COP_searchProcess(),
-    # COP_fetchProcess(),
+#    COP_fetchProcess(),
     # COP_indicesProcess(),
 ]

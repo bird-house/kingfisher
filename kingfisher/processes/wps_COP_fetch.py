@@ -4,11 +4,6 @@ from pywps import ComplexInput, LiteralInput, ComplexOutput
 from pywps import Format, FORMATS
 from pywps.app.Common import Metadata
 
-from eggshell.log import init_process_logger
-from flyingpigeon.utils import rename_complexinputs
-# from flyingpigeon import eodata
-from flyingpigeon.config import cache_path
-
 import logging
 #import zipfile
 
@@ -25,14 +20,16 @@ from pywps import Process
 from pywps.app.Common import Metadata
 from sentinelsat import SentinelAPI, geojson_to_wkt
 
-# from flyingpigeon import eodata
-from flyingpigeon.config import cache_path
-from flyingpigeon.log import init_process_logger
+# from eggshell import eodata
+# from eggshell.config import cache_path
+from eggshell.config import Paths
+from eggshell.log import init_process_logger
+from eggshell.utils import rename_complexinputs
 
 LOGGER = logging.getLogger("PYWPS")
 
 
-class EO_COP_fetchProcess(Process):
+class COP_fetchProcess(Process):
     """
     TODO: like FetchProcess
     """
@@ -123,16 +120,16 @@ class EO_COP_fetchProcess(Process):
                           )
         ]
 
-        super(EO_COP_fetchProcess, self).__init__(
+        super(COP_fetchProcess, self).__init__(
             self._handler,
-            identifier="EO_COPERNICUS_fetch",
+            identifier="COPERNICUS_fetch",
             title="Search COPERNICUS EO products and download them to the compute provider.",
             version="0.1",
             abstract="Search for EO Data in the scihub.copernicus archive"
                      "products will be downloaded into the local disc system."
                      "output is a list of products and a graphical visualisation.",
             metadata=[
-                Metadata('Documentation', 'http://flyingpigeon.readthedocs.io/en/latest/'),
+                Metadata('Documentation', 'http://eggshell.readthedocs.io/en/latest/'),
             ],
             inputs=inputs,
             outputs=outputs,
@@ -199,7 +196,7 @@ class EO_COP_fetchProcess(Process):
                              # orbitdirection='ASCENDING',
                              )
 
-        DIR_cache = cache_path()
+        DIR_cache = Paths.cache()
         DIR_EO = join(DIR_cache, 'scihub.copernicus')
 
         if not exists(DIR_EO):
