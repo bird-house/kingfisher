@@ -13,5 +13,6 @@ def test_wps_caps():
                             '/wps:Process'
                             '/ows:Identifier')
     assert sorted(names.split()) == [
+        'COPERNICUS_search',
         'hello',
     ]
