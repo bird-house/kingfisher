@@ -5,7 +5,7 @@ from pywps import Format, FORMATS
 from pywps.app.Common import Metadata
 
 import logging
-#import zipfile
+import zipfile
 
 from datetime import datetime as dt
 from datetime import timedelta, time
@@ -20,14 +20,12 @@ from pywps import Process
 from pywps.app.Common import Metadata
 from sentinelsat import SentinelAPI, geojson_to_wkt
 
-# from eggshell import eodata
-# from eggshell.config import cache_path
+import kingfisher
 from eggshell.config import Paths
 from eggshell.log import init_process_logger
 from eggshell.utils import rename_complexinputs
 
 LOGGER = logging.getLogger("PYWPS")
-
 
 class COP_fetchProcess(Process):
     """
@@ -196,8 +194,11 @@ class COP_fetchProcess(Process):
                              # orbitdirection='ASCENDING',
                              )
 
-        DIR_cache = Paths.cache()
-        DIR_EO = join(DIR_cache, 'scihub.copernicus')
+        try:
+            DIR_EO = join(Paths(kingfisher).cache, 'eo-data')
+        except:
+            LOGGER.exception("failed to define DIR_EO")
+            DIR_EO ='~/eo-data'
 
         if not exists(DIR_EO):
             makedirs(DIR_EO)
