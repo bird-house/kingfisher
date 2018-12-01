@@ -24,6 +24,7 @@ import kingfisher
 from eggshell.config import Paths
 from eggshell.log import init_process_logger
 from eggshell.utils import rename_complexinputs
+from eggshell.visual import visualisation as vs
 
 LOGGER = logging.getLogger("PYWPS")
 
@@ -267,7 +268,7 @@ class COP_fetchProcess(Process):
         # response.outputs['output'].file = filepaths
         try:
             extend = [float(bboxStr[0]) - 5, float(bboxStr[1]) + 5, float(bboxStr[2]) - 5, float(bboxStr[3]) + 5]
-            img = eodata.plot_products(products, extend=extend)
+            img = vs.plot_products(products, extend=extend)
             response.outputs['output_plot'].file = img
             LOGGER.debug('location of tiles plotted to map')
         except Exception as ex:

@@ -12,12 +12,13 @@ from pywps import Process
 from pywps.app.Common import Metadata
 from sentinelsat import SentinelAPI, geojson_to_wkt
 
-from eggshell.log import init_process_logger
-from flyingpigeon.utils import rename_complexinputs
+from eggshell.utils import rename_complexinputs, archive
 
-from flyingpigeon import eodata
-from flyingpigeon.config import cache_path
-from flyingpigeon.log import init_process_logger
+from eggshell import eodata
+
+import kingfisher
+from eggshell.config import Paths
+from eggshell.log import init_process_logger
 
 LOGGER = logging.getLogger("PYWPS")
 
@@ -121,7 +122,7 @@ class EO_COP_indicesProcess(Process):
             version="0.1",
             abstract="Derivations for NDVI and other indices",
             metadata=[
-                Metadata('Documentation', 'http://flyingpigeon.readthedocs.io/en/latest/'),
+                Metadata('Documentation', 'http://kingfisher.readthedocs.io/en/latest/'),
             ],
             inputs=inputs,
             outputs=outputs,
@@ -191,18 +192,15 @@ class EO_COP_indicesProcess(Process):
                              )
 
         LOGGER.debug('{} products found'.format(len(products.keys())))
-        DIR_cache = cache_path()
-        DIR_EO = join(DIR_cache, 'scihub.copernicus')
+
+        try:
+            DIR_EO = join(Paths(kingfisher).cache, 'eo-data')
+        except:
+            LOGGER.exception("failed to define DIR_EO")
+            DIR_EO ='~/eo-data'
+
         if not exists(DIR_EO):
             makedirs(DIR_EO)
-
-        # api.download_all(products)
-        # try:
-        # with open(filepaths, 'w') as fp:
-        #     fp.write('############################################\n')
-        #     fp.write('###     Following files are fetched      ###\n')
-        #     fp.write('############################################\n')
-        #     fp.write('\n')
 
         resources = []
 
@@ -284,7 +282,6 @@ class EO_COP_indicesProcess(Process):
                 LOGGER.exception(msg)
                 raise Exception(msg)
 
-        from flyingpigeon.utils import archive
         tarf = archive(imgs)
 
         response.outputs['output_archive'].file = tarf
@@ -294,9 +291,6 @@ class EO_COP_indicesProcess(Process):
             i = "dummy.png"
         response.outputs['output_plot'].file = imgs[i]
 
-        # from flyingpigeon import visualisation as vs
-        #
-        # images = vs.concat_images(imgs, orientation='v')
 
         response.update_status("done", 100)
         return response

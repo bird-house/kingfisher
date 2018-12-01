@@ -84,3 +84,6 @@ testdata.json
 *.a
 *.mod
 *.out
+
+# EO-data
+*esa-snap_sentinel_unix_6_0.sh

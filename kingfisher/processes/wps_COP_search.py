@@ -6,9 +6,8 @@ from pywps import Format, FORMATS
 from pywps.app.Common import Metadata
 
 from eggshell.log import init_process_logger
-
+from eggshell.visual import visualisation as vs
 from eggshell.utils import rename_complexinputs
-from kingfisher import eodata
 
 import logging
 from datetime import datetime as dt
@@ -214,7 +213,7 @@ class COP_searchProcess(Process):
             # response.outputs['output'].file = filepaths
         try:
             extend = [float(bboxStr[0]) - 5, float(bboxStr[1]) + 5, float(bboxStr[2]) - 5, float(bboxStr[3]) + 5]
-            img = eodata.plot_products(products, extend=extend)
+            img = vs.plot_products(products, extend=extend)
             response.outputs['output_plot'].file = img
         except Exception as ex:
             msg = 'Failed to plot extents of EO data: {}'.format(str(ex))

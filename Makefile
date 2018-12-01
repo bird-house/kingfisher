@@ -68,6 +68,13 @@ install: bootstrap
 	@-bash -c "source $(ANACONDA_HOME)/bin/activate $(CONDA_ENV) && python setup.py develop"
 	@echo "\nStart service with \`make start'"
 
+
+.PHONY: post-install
+post-install:
+	@echo "Installing snappy ..."
+	@-bash $(APP_ROOT)"/requirements/snappy-install.sh" $(CONDA_ENV_PATH) $(APP_ROOT)
+
+
 .PHONY: start
 start: check_conda
 	@echo "Starting application ..."
