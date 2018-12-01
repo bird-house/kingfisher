@@ -14,7 +14,7 @@ from sentinelsat import SentinelAPI, geojson_to_wkt
 
 from eggshell.utils import rename_complexinputs, archive
 
-from eggshell import eodata
+from kingfisher import eodata
 
 import kingfisher
 from eggshell.config import Paths
@@ -23,7 +23,7 @@ from eggshell.log import init_process_logger
 LOGGER = logging.getLogger("PYWPS")
 
 
-class EO_COP_indicesProcess(Process):
+class COP_indicesProcess(Process):
     def __init__(self):
         inputs = [
             LiteralInput("indices", "Earth Observation Product Indice",
@@ -115,9 +115,9 @@ class EO_COP_indicesProcess(Process):
                           )
         ]
 
-        super(EO_COP_indicesProcess, self).__init__(
+        super(COP_indicesProcess, self).__init__(
             self._handler,
-            identifier="EO_COPERNICUS_indices",
+            identifier="COPERNICUS_indices",
             title="EO indices",
             version="0.1",
             abstract="Derivations for NDVI and other indices",
