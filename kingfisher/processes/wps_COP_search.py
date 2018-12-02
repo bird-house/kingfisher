@@ -6,7 +6,7 @@ from pywps import Format, FORMATS
 from pywps.app.Common import Metadata
 
 from eggshell.log import init_process_logger
-from eggshell.visual import visualisation as vs
+from eggshell.visual import vs_eodata as vs
 from eggshell.utils import rename_complexinputs
 
 import logging
@@ -22,7 +22,6 @@ from pywps.app.Common import Metadata
 from sentinelsat import SentinelAPI, geojson_to_wkt
 
 LOGGER = logging.getLogger("PYWPS")
-
 
 class COP_searchProcess(Process):
     """

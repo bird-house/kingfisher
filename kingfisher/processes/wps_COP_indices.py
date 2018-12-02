@@ -19,6 +19,7 @@ from kingfisher import eodata
 import kingfisher
 from eggshell.config import Paths
 from eggshell.log import init_process_logger
+from eggshell.visual import vs_eodata
 
 LOGGER = logging.getLogger("PYWPS")
 
@@ -275,7 +276,7 @@ class COP_indicesProcess(Process):
         for tile in tiles:
             try:
                 LOGGER.debug('Plot tile {}'.format(tile))
-                img = eodata.plot_band(tile, file_extension='PNG', colorscheem=indice)
+                img = vs_eodata.plot_band(tile, file_extension='PNG', colorscheem=indice)
                 imgs.append(img)
             except Exception as ex:
                 msg = 'Failed to plot tile {}: {}'.format(tile, str(ex))

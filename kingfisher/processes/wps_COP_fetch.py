@@ -24,7 +24,7 @@ import kingfisher
 from eggshell.config import Paths
 from eggshell.log import init_process_logger
 from eggshell.utils import rename_complexinputs
-from eggshell.visual import visualisation as vs
+from eggshell.visual import vs_eodata as vs
 
 LOGGER = logging.getLogger("PYWPS")
 

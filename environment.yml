@@ -10,7 +10,7 @@ dependencies:
 - psutil
 # - eggshell
 # analytic
-- python=3
+- python=3.4 # SNAP toolbox support only 2.7 3.3 3.4 
 - numpy
 # visualisation
 - cartopy

@@ -9,12 +9,12 @@ CWD=$(pwd -P)
 
 # These paths can be set by Makefile in the post-install target
 APP_ROOT="$CWD"
-CONDA_ENV="$HOME/.conda/envs/flyingpigeon"
+CONDA_ENV="$HOME/.conda/envs/kingfisher"
 
-if [ $# -ge 1 ]; then
-    echo "Setting CONDA_ENV=$1"
-    CONDA_ENV="$1"
-fi
+# if [ $# -ge 1 ]; then
+#     echo "Setting CONDA_ENV=$1"
+#     CONDA_ENV="$1"
+# fi
 
 if [ $# -ge 2 ]; then
     echo "Setting APP_ROOT=$2"
@@ -32,11 +32,15 @@ VARFILE=$DOWNLOAD_CACHE/response.varfile
 
 # end of configuration
 
-
-
 echo '***************************************************'
 echo '*********** start snappy installation *************'
 echo '***************************************************'
+echo ' '
+echo '##########################'
+echo '#### CONDA_ENV is set to: ' $CONDA_ENV
+echo '##########################'
+echo '#### APP_ROOT is set to : ' $APP_ROOT
+echo '##########################'
 
 mkdir -p $INSTALL_DIR
 
@@ -57,7 +61,7 @@ sys.component.SNAP$Boolean=true
 sys.installationDir=$INSTALL_DIR
 sys.languageId=en
 sys.programGroupDisabled$Boolean=false
-sys.symlinkDir=/usr/local/bin
+sys.symlinkDir=$CONDA_ENV/bin/
 EOT
 
 bash $DOWNLOAD_CACHE/$ESA_SNAP -q -varfile $VARFILE
@@ -65,7 +69,7 @@ bash $DOWNLOAD_CACHE/$ESA_SNAP -q -varfile $VARFILE
 PY=$PYTHON
 $INSTALL_DIR/bin/snappy-conf $PY $INSTALL_DIR/snap-python/
 
-cp -r $INSTALL_DIR/snap-python/snappy $CONDA_ENV/lib/python2.7/site-packages/
+cp -r $INSTALL_DIR/snap-python/snappy $CONDA_ENV/lib/python3.6/site-packages/
 
 echo 'snappy copied to site-packages'
 
