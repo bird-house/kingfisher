@@ -1,0 +1,2 @@
+class SnappyWarning(UserWarning):
+    pass

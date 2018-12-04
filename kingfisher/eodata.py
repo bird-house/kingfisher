@@ -11,8 +11,14 @@ from os import path, listdir
 import glob
 import subprocess
 
+from .dependencies import ProductIO
+from .dependencies import jpy
+# from snappy import ProductIO
+# from snappy import jpy
+
 import logging
 LOGGER = logging.getLogger("PYWPS")
+
 
 def get_bai(basedir, product='Sentinel2'):
     """
@@ -28,7 +34,7 @@ def get_bai(basedir, product='Sentinel2'):
 
     jps = []
     fname = basedir.split('/')[-1]
-    ID = fname.replace('.SAFE','')
+    ID = fname.replace('.SAFE', '')
 
     LOGGER.debug("Start calculating BAI for %s " % ID)
 
@@ -44,9 +50,9 @@ def get_bai(basedir, product='Sentinel2'):
         NIR = nir.read()
 
     try:
-        #compute the BAI burned area index
+        # compute the BAI burned area index
         # 1 / ((0.1 - RED)^2 + (0.06 -NIR)^2)
-        bai = 1 / (np.power((0.1 - RED) ,2) + np.power((0.06 - NIR) ,2))
+        bai = 1 / (np.power((0.1 - RED), 2) + np.power((0.06 - NIR), 2))
 
         LOGGER.debug("BAI values are calculated")
 
@@ -57,7 +63,7 @@ def get_bai(basedir, product='Sentinel2'):
         _, bai_file = mkstemp(dir='.', prefix=prefix, suffix='.tif')
         with rasterio.open(bai_file, 'w', **profile) as dst:
             dst.write(bai.astype(rasterio.float32))
-    except:
+    except Exception:
         LOGGER.exception("Failed to Calculate BAI for %s " % prefix)
     return bai_file
 
@@ -80,7 +86,7 @@ def get_timestamp(tile):
         ds = None  # to close the dataset
 
         timestamp = dt.strptime(ts, '%Y:%m:%d %H:%M:%S')
-    except:
+    except Exception:
         LOGGER.exception('failed to get timestamp for: %s' % tile)
 
     return timestamp
@@ -102,22 +108,22 @@ def resample(DIR, band, resolution):
     GPF.getDefaultInstance().getOperatorSpiRegistry().loadOperatorSpis()
 
     HashMap = jpy.get_type('java.util.HashMap')
-    BandDescriptor = jpy.get_type('org.esa.snap.core.gpf.common.BandMathsOp$BandDescriptor')
+    # TODO: BandDescriptor not used
+    # BandDescriptor = jpy.get_type('org.esa.snap.core.gpf.common.BandMathsOp$BandDescriptor')
 
     parameters = HashMap()
     parameters.put('targetResolution', resolution)
-    parameters.put('upsampling','Bicubic')
-    parameters.put('downsampling','Mean')
-    parameters.put('flagDownsampling','FlagMedianAnd')
-    parameters.put('resampleOnPyramidLevels',True)
+    parameters.put('upsampling', 'Bicubic')
+    parameters.put('downsampling', 'Mean')
+    parameters.put('flagDownsampling', 'FlagMedianAnd')
+    parameters.put('resampleOnPyramidLevels', True)
 
     product = ProductIO.readProduct(DIR)
-    product=GPF.createProduct('Resample', parameters, product)
+    product = GPF.createProduct('Resample', parameters, product)
 
     rsp_band = product.getBand(band)
 
     return rsp_band
-
 
 
 def merge(tiles, prefix="mosaic_"):
@@ -131,7 +137,6 @@ def merge(tiles, prefix="mosaic_"):
 
     from eggshell.eo import gdal_merge as gm
     from os.path import join, basename
-    import subprocess
     from subprocess import CalledProcessError
     from eggshell.config import _PATH
 
@@ -182,18 +187,19 @@ def get_ndvi(basedir, product='Sentinel2'):
     """
     import rasterio
     import numpy as np
-    from os import path, listdir
+    from os import path
     from tempfile import mkstemp
     from osgeo import gdal
     # import os, rasterio
     import glob
-    import subprocess
 
     prefix = path.basename(path.normpath(basedir)).split('.')[0]
 
     jps = []
-    fname = basedir.split('/')[-1]
-    ID = fname.replace('.SAFE','')
+    # TODO: fname is not used
+    # fname = basedir.split('/')[-1]
+    # TODO: ID not used
+    # ID = fname.replace('.SAFE', '')
 
     for filename in glob.glob(basedir + '/GRANULE/*/IMG_DATA/*jp2'):
         jps.append(filename)
@@ -208,7 +214,7 @@ def get_ndvi(basedir, product='Sentinel2'):
 
     try:
         # compute the ndvi
-        ndvi = (NIR.astype(float) - RED.astype(float)) / (NIR + RED )
+        ndvi = (NIR.astype(float) - RED.astype(float)) / (NIR + RED)
 
         profile = red.meta
         profile.update(driver='GTiff')
@@ -217,7 +223,7 @@ def get_ndvi(basedir, product='Sentinel2'):
         _, ndvifile = mkstemp(dir='.', prefix=prefix, suffix='.tif')
         with rasterio.open(ndvifile, 'w', **profile) as dst:
             dst.write(ndvi.astype(rasterio.float32))
-    except:
+    except Exception:
         LOGGER.exception("Failed to Calculate NDVI for %s " % prefix)
     return ndvifile
 

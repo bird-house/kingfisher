@@ -13,11 +13,6 @@ from os import makedirs
 from os.path import exists, join
 from tempfile import mkstemp
 
-from pywps import Format
-# from pywps import LiteralInput
-from pywps import LiteralInput, ComplexOutput
-from pywps import Process
-from pywps.app.Common import Metadata
 from sentinelsat import SentinelAPI, geojson_to_wkt
 
 import kingfisher
@@ -27,6 +22,7 @@ from eggshell.utils import rename_complexinputs
 from eggshell.visual import vs_eodata as vs
 
 LOGGER = logging.getLogger("PYWPS")
+
 
 class COP_fetchProcess(Process):
     """
@@ -197,9 +193,9 @@ class COP_fetchProcess(Process):
 
         try:
             DIR_EO = join(Paths(kingfisher).cache, 'eo-data')
-        except:
+        except Exception:
             LOGGER.exception("failed to define DIR_EO")
-            DIR_EO ='~/eo-data'
+            DIR_EO = '~/eo-data'
 
         if not exists(DIR_EO):
             makedirs(DIR_EO)
@@ -216,7 +212,8 @@ class COP_fetchProcess(Process):
                     try:
 
                         filename = products[key]['filename']
-                        form = products[key]['format']
+                        # TODO: form unused
+                        # form = products[key]['format']
                         response.update_status("fetch file {}".format(filename), 20)
                         ID = str(products[key]['identifier'])
                         file_zip = join(DIR_EO, '{}.zip'.format(ID))

@@ -196,9 +196,9 @@ class COP_indicesProcess(Process):
 
         try:
             DIR_EO = join(Paths(kingfisher).cache, 'eo-data')
-        except:
+        except Exception:
             LOGGER.exception("failed to define DIR_EO")
-            DIR_EO ='~/eo-data'
+            DIR_EO = '~/eo-data'
 
         if not exists(DIR_EO):
             makedirs(DIR_EO)
@@ -238,7 +238,7 @@ class COP_indicesProcess(Process):
                         zip_ref.extractall(DIR_EO)
                         zip_ref.close()
                         LOGGER.debug('Tile {} unzipped'.format(ID))
-                    except Exception as ex:
+                    except Exception:
                         msg = 'failed to extract {}'.format(file_zip)
                         LOGGER.exception(msg)
                         raise Exception(msg)
@@ -250,9 +250,9 @@ class COP_indicesProcess(Process):
                 raise Exception(msg)
 
         # TODO: Find a place for these variables or remove them
-        size = float(products[key]['size'].split(' ')[0])
-        producttype = products[key]['producttype']
-        beginposition = str(products[key]['beginposition'])
+        # size = float(products[key]['size'].split(' ')[0])
+        # producttype = products[key]['producttype']
+        # beginposition = str(products[key]['beginposition'])
 
         imgs = []
         tiles = []
@@ -291,7 +291,6 @@ class COP_indicesProcess(Process):
         if i is None:
             i = "dummy.png"
         response.outputs['output_plot'].file = imgs[i]
-
 
         response.update_status("done", 100)
         return response

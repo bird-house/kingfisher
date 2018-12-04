@@ -1,34 +1,21 @@
 #!/bin/bash
 
 # call it like this:
-# bash requirements/snappy-install.sh conda_env app_root
+# $ source activate kingfisher
+# $ bash install-snappy.sh
 
 # configuration
-
-CWD=$(pwd -P)
-
-# These paths can be set by Makefile in the post-install target
-APP_ROOT="$CWD"
-CONDA_ENV="$HOME/.conda/envs/kingfisher"
-
-# if [ $# -ge 1 ]; then
-#     echo "Setting CONDA_ENV=$1"
-#     CONDA_ENV="$1"
-# fi
-
-if [ $# -ge 2 ]; then
-    echo "Setting APP_ROOT=$2"
-    APP_ROOT="$2"
-fi
+APP_ROOT="$(pwd -P)"
 
 DOWNLOAD_CACHE="$APP_ROOT/downloads"
-PREFIX="$APP_ROOT/parts"
+PREFIX="$APP_ROOT/src"
 
 # misc
+ESA_SNAP_URL="http://step.esa.int/downloads/6.0/installers"
 ESA_SNAP="esa-snap_sentinel_unix_6_0.sh"
-PYTHON=$CONDA_ENV/bin/python
+PYTHON=$(which python)
 INSTALL_DIR=$PREFIX/snap
-VARFILE=$DOWNLOAD_CACHE/response.varfile
+VARFILE=$INSTALL_DIR/install.conf
 
 # end of configuration
 
@@ -37,14 +24,15 @@ echo '*********** start snappy installation *************'
 echo '***************************************************'
 echo ' '
 echo '##########################'
-echo '#### CONDA_ENV is set to: ' $CONDA_ENV
+echo '#### PYTHON is set to: ' $PYTHON
 echo '##########################'
-echo '#### APP_ROOT is set to : ' $APP_ROOT
+echo '#### INSTALL_DIR is set to : ' $INSTALL_DIR
 echo '##########################'
 
 mkdir -p $INSTALL_DIR
+mkdir -p $DOWNLOAD_CACHE
 
-[ -f "$DOWNLOAD_CACHE/$ESA_SNAP" ] && echo "ESA SNAP installation file already downloaded " || wget -P $DOWNLOAD_CACHE http://step.esa.int/downloads/6.0/installers/$ESA_SNAP
+[ -f "$DOWNLOAD_CACHE/$ESA_SNAP" ] && echo "ESA SNAP installation file already downloaded " || wget -P $DOWNLOAD_CACHE $ESA_SNAP_URL/$ESA_SNAP
 
 
 cat <<EOT >> $VARFILE
@@ -61,19 +49,18 @@ sys.component.SNAP$Boolean=true
 sys.installationDir=$INSTALL_DIR
 sys.languageId=en
 sys.programGroupDisabled$Boolean=false
-sys.symlinkDir=$CONDA_ENV/bin/
+sys.symlinkDir=
 EOT
 
 bash $DOWNLOAD_CACHE/$ESA_SNAP -q -varfile $VARFILE
 
-PY=$PYTHON
-$INSTALL_DIR/bin/snappy-conf $PY $INSTALL_DIR/snap-python/
+$INSTALL_DIR/bin/snappy-conf $PYTHON $INSTALL_DIR
 
-cp -r $INSTALL_DIR/snap-python/snappy $CONDA_ENV/lib/python3.6/site-packages/
+cd $INSTALL_DIR/snappy
+$PYTHON setup.py install
+cd -
 
-echo 'snappy copied to site-packages'
-
-rm $VARFILE
+echo 'python snappy installed'
 
 echo '***************************************************'
 echo '*********** snappy installation done **************'
