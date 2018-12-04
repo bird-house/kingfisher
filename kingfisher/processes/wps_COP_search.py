@@ -14,14 +14,10 @@ from datetime import datetime as dt
 from datetime import timedelta, time
 from tempfile import mkstemp
 
-from pywps import Format
-# from pywps import LiteralInput
-from pywps import LiteralInput, ComplexOutput
-from pywps import Process
-from pywps.app.Common import Metadata
 from sentinelsat import SentinelAPI, geojson_to_wkt
 
 LOGGER = logging.getLogger("PYWPS")
+
 
 class COP_searchProcess(Process):
     """
